@@ -138,7 +138,6 @@ public final class Question {
      * @return The correct answer.
      */
     public Answer getCorrectAnswer() {
-        // TODO: TU
         return this.answers[this.correctAnswerIndex];
     }
 }

@@ -2,17 +2,17 @@ package com.imie.a2dev.teamculte.quizzmaster.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractDifficultyDbSchema;
 import com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameDbSchema;
 import com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema;
 import com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGamesPlayersDifficultiesDbSchema;
 import com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractPlayerDbSchema;
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 /**
  * Class used to manage database structure (tables, upgrades...).
  */
-public final class DbHandlerUtils extends SQLiteAssetHelper {
+public final class DbHandlerUtils extends SQLiteOpenHelper {
     /**
      * Defines the drop statement.
      */
@@ -29,22 +29,9 @@ public final class DbHandlerUtils extends SQLiteAssetHelper {
         super(context, name, factory, version);
     }
 
-
-    /**
-     * Creates the database.
-     * @param db The database object.
-     */
-    public void create(SQLiteDatabase db) {
-        // Difficulty table
-        db.execSQL(AbstractDifficultyDbSchema.CREATE_TABLE);
-        // Game table
-        db.execSQL(AbstractGameDbSchema.CREATE_TABLE);
-        // GameMode table
-        db.execSQL(AbstractGameModeDbSchema.CREATE_TABLE);
-        // GamesPlayersDifficulties table
-        db.execSQL(AbstractGamesPlayersDifficultiesDbSchema.CREATE_TABLE);
-        // Player table
-        db.execSQL(AbstractPlayerDbSchema.CREATE_TABLE);
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        this.create(db);
     }
 
     @Override
@@ -56,5 +43,22 @@ public final class DbHandlerUtils extends SQLiteAssetHelper {
         db.execSQL(String.format(DROP_STATEMENT, AbstractPlayerDbSchema.TABLE));
 
         this.onCreate(db);
+    }
+
+    /**
+     * Creates the database.
+     * @param db The database object.
+     */
+    private void create(SQLiteDatabase db) {
+        // Difficulty table
+        db.execSQL(AbstractDifficultyDbSchema.CREATE_TABLE);
+        // Game table
+        db.execSQL(AbstractGameDbSchema.CREATE_TABLE);
+        // GameMode table
+        db.execSQL(AbstractGameModeDbSchema.CREATE_TABLE);
+        // GamesPlayersDifficulties table
+        db.execSQL(AbstractGamesPlayersDifficultiesDbSchema.CREATE_TABLE);
+        // Player table
+        db.execSQL(AbstractPlayerDbSchema.CREATE_TABLE);
     }
 }

@@ -1,5 +1,10 @@
 package com.imie.a2dev.teamculte.quizzmaster.entities.dbentities;
 
+import android.database.Cursor;
+
+import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractPlayerDbSchema.ID;
+import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractPlayerDbSchema.NAME;
+
 /**
  * Class defining a player of the game.
  */
@@ -35,6 +40,7 @@ public final class Player extends DbEntity {
         this.points = 0;
         this.difficulty = difficulty;
     }
+    
     /**
      * Nearly full filled constructor.
      * @param id The id to set.
@@ -47,6 +53,14 @@ public final class Player extends DbEntity {
         this.name = name;
         this.points = points;
         this.difficulty = difficulty;
+    }
+
+    /**
+     * Cursor constructor.
+     * @param result The cursor used to set.
+     */
+    public Player(Cursor result) {
+        this.init(result, true);
     }
 
     /**
@@ -95,5 +109,19 @@ public final class Player extends DbEntity {
      */
     public void setDifficulty(Difficulty newDifficulty) {
         this.difficulty = newDifficulty;
+    }
+
+    @Override
+    public void init(Cursor result, boolean close) {
+        if (result.isBeforeFirst()) {
+            result.moveToNext();
+        }
+
+        this.id = result.getInt(result.getColumnIndex(ID));
+        this.name = result.getString(result.getColumnIndex(NAME));
+
+        if (close) {
+            result.close();
+        }
     }
 }

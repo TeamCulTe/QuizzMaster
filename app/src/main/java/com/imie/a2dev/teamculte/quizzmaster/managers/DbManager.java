@@ -8,6 +8,8 @@ import android.util.Log;
 import com.imie.a2dev.teamculte.quizzmaster.utils.DbHandlerUtils;
 import com.imie.a2dev.teamculte.quizzmaster.utils.TagUtils;
 
+import static com.imie.a2dev.teamculte.quizzmaster.utils.TagUtils.SQLITE_TAG;
+
 /**
  * Abstract class extended by all DBManager classes (used to manage entities into databases).
  */
@@ -21,6 +23,16 @@ public abstract class DbManager {
      * Defines the count param and json value from MySQL query alias.
      */
     private final String COUNT = "count";
+
+    /**
+     * Stores a query all string for entity with only one id. 
+     */
+    protected static final String SIMPLE_QUERY_ALL = "SELECT * FROM %s WHERE %s = ?";
+
+    /**
+     * Stores the count query for entity with only one id.
+     */
+    protected static final String SIMPLE_QUERY_COUNT = "SELECT COUNT(*) as %s FROM %s";
 
     /**
      * Defines the database file name.
@@ -91,7 +103,7 @@ public abstract class DbManager {
      * @return The SQLiteDatabase value of database attribute.
      */
     public SQLiteDatabase getDatabase() {
-        return database;
+        return this.database;
     }
 
     /**
@@ -149,7 +161,7 @@ public abstract class DbManager {
     public final int countSQLite() {
         try {
             String[] selectArgs = {};
-            String query = String.format("SELECT COUNT(*) as %s FROM %s", COUNT, this.table);
+            String query = String.format(SIMPLE_QUERY_COUNT, COUNT, this.table);
             Cursor result = this.database.rawQuery(query, selectArgs);
 
             result.moveToNext();
@@ -160,9 +172,27 @@ public abstract class DbManager {
 
             return count;
         } catch (SQLiteException e) {
-            Log.e(TagUtils.SQLITE_TAG, e.getMessage());
+            Log.e(SQLITE_TAG, e.getMessage());
 
             return -1;
+        }
+    }
+
+    /**
+     * From an id, returns the associated java entity as a cursor (simple entities).
+     * @param id The id of entity to load from the database.
+     * @return The cursor of the loaded entity.
+     */
+    public Cursor loadCursorSQLite(int id) {
+        try {
+            String[] selectArgs = {String.valueOf(id)};
+            String query = String.format(SIMPLE_QUERY_ALL, this.table, this.ids[0]);
+
+            return this.database.rawQuery(query, selectArgs);
+        } catch (SQLiteException e) {
+            Log.e(SQLITE_TAG, e.getMessage());
+
+            return null;
         }
     }
 
@@ -189,7 +219,7 @@ public abstract class DbManager {
 
             return this.database.delete(this.table, builder.toString(), whereArgs) != 0;
         } catch (SQLiteException e) {
-            Log.e(TagUtils.SQLITE_TAG, e.getMessage());
+            Log.e(SQLITE_TAG, e.getMessage());
 
             return false;
         }
@@ -209,5 +239,6 @@ public abstract class DbManager {
      */
     private void close() {
         this.handler.close();
+        this.database.close();
     }
 }

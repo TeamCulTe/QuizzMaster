@@ -1,5 +1,7 @@
 package com.imie.a2dev.teamculte.quizzmaster.entities.dbentities;
 
+import android.database.Cursor;
+
 /**
  * Abstract entity extended by all the entities stored into database.
  */
@@ -26,7 +28,7 @@ public abstract class DbEntity {
      * Gets the id attribute.
      * @return The $field.typeName value of id attribute.
      */
-    public long getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -37,4 +39,11 @@ public abstract class DbEntity {
     public void setId(int newId) {
         this.id = newId;
     }
+
+    /**
+     * Initializes the entity from a cursor object.
+     * @param result The cursor used to init the entity.
+     * @param close The boolean defining if cursor needs to be closed or not to set.
+     */
+    public abstract void init(Cursor result, boolean close);
 }

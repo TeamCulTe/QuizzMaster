@@ -1,6 +1,9 @@
 package com.imie.a2dev.teamculte.quizzmaster.entities.dbentities;
 
+import android.database.Cursor;
 import com.imie.a2dev.teamculte.quizzmaster.entities.Question;
+
+import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.ID;
 
 /**
  * Class defining the playing game.
@@ -60,6 +63,14 @@ public final class Game extends DbEntity {
     }
 
     /**
+     * Cursor constructor.
+     * @param result The cursor used to set.
+     */
+    public Game(Cursor result) {
+        this.init(result, true);
+    }
+
+    /**
      * Gets the mode attribute.
      * @return The GameMode value of mode attribute.
      */
@@ -105,5 +116,18 @@ public final class Game extends DbEntity {
      */
     public void setQuestions(Question[] newQuestions) {
         this.questions = newQuestions;
+    }
+
+    @Override
+    public void init(Cursor result, boolean close) {
+        if (result.isBeforeFirst()) {
+            result.moveToNext();
+        }
+
+        this.id = result.getInt(result.getColumnIndex(ID));
+
+        if (close) {
+            result.close();
+        }
     }
 }

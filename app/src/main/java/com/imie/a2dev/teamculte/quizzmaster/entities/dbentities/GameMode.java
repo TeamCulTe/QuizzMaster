@@ -1,5 +1,10 @@
 package com.imie.a2dev.teamculte.quizzmaster.entities.dbentities;
 
+import android.database.Cursor;
+
+import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.ID;
+import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.NAME;
+
 /**
  * Enum defining the different game modes (player vs player / player vs IA).
  */
@@ -13,7 +18,7 @@ public final class GameMode extends DbEntity {
      * Nearly full filled constructor.
      * @param name The name to set.
      */
-    GameMode(String name) {
+    public GameMode(String name) {
         this.name = name;
     }
 
@@ -22,9 +27,17 @@ public final class GameMode extends DbEntity {
      * @param id The id to set.
      * @param name The name to set.
      */
-    GameMode(int id, String name) {
+    public GameMode(int id, String name) {
         super(id);
         this.name = name;
+    }
+
+    /**
+     * Cursor constructor.
+     * @param result The cursor used to set.
+     */
+    public GameMode(Cursor result) {
+        this.init(result, true);
     }
 
     /**
@@ -41,5 +54,19 @@ public final class GameMode extends DbEntity {
      */
     public void setName(String newName) {
         this.name = newName;
+    }
+
+    @Override
+    public void init(Cursor result, boolean close) {
+        if (result.isBeforeFirst()) {
+            result.moveToNext();
+        }
+
+        this.id = result.getInt(result.getColumnIndex(ID));
+        this.name = result.getString(result.getColumnIndex(NAME));
+
+        if (close) {
+            result.close();
+        }
     }
 }
