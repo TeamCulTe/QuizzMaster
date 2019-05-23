@@ -7,4 +7,8 @@
     <string name="new_game">New Game</string>
     <string name="load_player">Load Player</string>
     <string name="settings">Settings</string>
+    <string name="create_a_player">Create a player</string>
+    <string name="player_name">Player name</string>
+    <string name="validate">Validate</string>
+    <string name="load_a_player">Load a player</string>
 </resources>
