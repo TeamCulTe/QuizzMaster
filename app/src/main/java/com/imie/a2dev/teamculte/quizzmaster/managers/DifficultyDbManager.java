@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.Difficulty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractDifficultyDbSchema.ID;
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractDifficultyDbSchema.NAME;
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractDifficultyDbSchema.TABLE;
@@ -88,5 +91,26 @@ public final class DifficultyDbManager extends DbManager {
 
             return false;
         }
+    }
+
+    /**
+     * Query all the entities from database.
+     * @return The list of entities loaded.
+     */
+    public List<Difficulty> queryAllSQLite() {
+        Difficulty difficulty;
+        List<Difficulty> difficulties = new ArrayList<>();
+        Cursor cursor = this.database.rawQuery(String.format(DbManager.QUERY_ALL, this.table), null);
+        
+        while (cursor.moveToNext()) {
+            difficulty = new Difficulty();
+            
+            difficulty.init(cursor, false);
+            difficulties.add(difficulty);
+        }
+        
+        cursor.close();
+        
+        return difficulties;
     }
 }

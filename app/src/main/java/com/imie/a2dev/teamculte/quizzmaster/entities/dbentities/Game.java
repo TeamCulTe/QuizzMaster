@@ -3,6 +3,9 @@ package com.imie.a2dev.teamculte.quizzmaster.entities.dbentities;
 import android.database.Cursor;
 import com.imie.a2dev.teamculte.quizzmaster.entities.Question;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.ID;
 
 /**
@@ -27,12 +30,12 @@ public final class Game extends DbEntity {
     /**
      * Stores the players of the game.
      */
-    private Player[] players = new Player[PLAYER_NB];
+    private List<Player> players = new ArrayList<>();
 
     /**
      * Stores the questions of the game. 
      */
-    private Question[] questions = new Question[QUESTION_NB];
+    private List<Question> questions = new ArrayList<>();
     
     /**
      * Default constructor
@@ -55,7 +58,7 @@ public final class Game extends DbEntity {
      * @param players The players to set.
      * @param questions the questions to set.
      */
-    public Game(int id, GameMode mode, Player[] players, Question[] questions) {
+    public Game(int id, GameMode mode, List<Player> players, List<Question> questions) {
         this.id = id;
         this.mode = mode;
         this.players = players;
@@ -88,17 +91,17 @@ public final class Game extends DbEntity {
 
     /**
      * Gets the players attribute.
-     * @return The Player[] value of players attribute.
+     * @return The List<Player> value of players attribute.
      */
-    public Player[] getPlayers() {
+    public List<Player> getPlayers() {
         return this.players;
     }
 
     /**
      * Sets the players attribute.
-     * @param newPlayers The new Player[] value to set.
+     * @param newPlayers The new List<Player> value to set.
      */
-    public void setPlayers(Player[] newPlayers) {
+    public void setPlayers(List<Player> newPlayers) {
         this.players = newPlayers;
     }
 
@@ -106,7 +109,7 @@ public final class Game extends DbEntity {
      * Gets the questions attribute.
      * @return The Question[] value of questions attribute.
      */
-    public Question[] getQuestions() {
+    public List<Question> getQuestions() {
         return this.questions;
     }
 
@@ -114,7 +117,7 @@ public final class Game extends DbEntity {
      * Sets the questions attribute.
      * @param newQuestions The new Question[] value to set.
      */
-    public void setQuestions(Question[] newQuestions) {
+    public void setQuestions(List<Question> newQuestions) {
         this.questions = newQuestions;
     }
 

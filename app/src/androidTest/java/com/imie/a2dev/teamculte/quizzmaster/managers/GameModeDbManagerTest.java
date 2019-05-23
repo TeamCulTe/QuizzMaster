@@ -21,6 +21,11 @@ public final class GameModeDbManagerTest extends CommonDbManagerTest {
      * Stores the name used for tests.
      */
     protected static final String TEST_NAME = "testGameMode";
+
+    /**
+     * Stores the player number used for tests.
+     */
+    protected static final int TEST_PLAYER_NUMBER = 2;
     
     /**
      * Stores the associated DbManager.
@@ -64,6 +69,7 @@ public final class GameModeDbManagerTest extends CommonDbManagerTest {
     public void testCreateSQLite() {
         assertTrue(this.testEntity.getId() != 0);
         assertEquals(this.testEntity.getName(), TEST_NAME);
+        assertEquals(this.testEntity.getPlayerNumber(), TEST_PLAYER_NUMBER);
     }
 
     @Test
@@ -73,11 +79,13 @@ public final class GameModeDbManagerTest extends CommonDbManagerTest {
         assertNotNull(loaded);
         assertEquals(this.testEntity.getId(), loaded.getId());
         assertEquals(this.testEntity.getName(), loaded.getName());
+        assertEquals(this.testEntity.getPlayerNumber(), loaded.getPlayerNumber());
     }
 
     @Test
     public void testUpdateSQLite() {
         String newName = "newName";
+        int newPlayerNb = 1;
 
         this.testEntity.setName(newName);
         this.manager.updateSQLite(this.testEntity);
@@ -86,6 +94,7 @@ public final class GameModeDbManagerTest extends CommonDbManagerTest {
 
         assertNotNull(this.testEntity);
         assertEquals(newName, this.testEntity.getName());
+        assertEquals(newPlayerNb, this.testEntity.getPlayerNumber());
     }
 
     @Test
@@ -95,12 +104,23 @@ public final class GameModeDbManagerTest extends CommonDbManagerTest {
         assertNull(this.manager.loadSQLite(this.testEntity.getId()));
     }
 
-    /**
-     * Initializes the test entity.
-     * @return The test entity.
-     */
+    @Test
+    public void testCountSQLite() {
+        assertEquals(1, this.manager.countSQLite());
+    }
+
+    @Test
+    public void testQueryAllSQLite() {
+        GameMode secMode = new GameMode("SecMode", 1);
+
+        this.manager.createSQLite(secMode);
+
+        assertEquals(2, this.manager.queryAllSQLite().size());
+    }
+
+    @Override
     protected void initTestEntity() {
-        GameMode mode = new GameMode(TEST_NAME);
+        GameMode mode = new GameMode(TEST_NAME, TEST_PLAYER_NUMBER);
 
         this.manager.createSQLite(mode);
 

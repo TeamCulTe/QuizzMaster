@@ -2,10 +2,12 @@ package com.imie.a2dev.teamculte.quizzmaster.entities.dbentities;
 
 import android.database.Cursor;
 
+import java.io.Serializable;
+
 /**
  * Abstract entity extended by all the entities stored into database.
  */
-public abstract class DbEntity {
+public abstract class DbEntity  implements Serializable {
     /**
      * Stores the entity id.
      */

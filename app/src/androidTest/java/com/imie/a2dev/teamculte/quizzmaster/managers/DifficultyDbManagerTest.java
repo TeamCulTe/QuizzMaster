@@ -93,6 +93,20 @@ public final class DifficultyDbManagerTest extends CommonDbManagerTest {
 
         assertNull(this.manager.loadSQLite(this.testEntity.getId()));
     }
+    
+    @Test
+    public void testCountSQLite() {
+        assertEquals(1, this.manager.countSQLite());
+    }
+    
+    @Test
+    public void testQueryAllSQLite() {
+        Difficulty secDifficulty = new Difficulty("SecDifficulty");
+        
+        this.manager.createSQLite(secDifficulty);
+        
+        assertEquals(2, this.manager.queryAllSQLite().size());
+    }
 
     @Override
     protected void initTestEntity() {

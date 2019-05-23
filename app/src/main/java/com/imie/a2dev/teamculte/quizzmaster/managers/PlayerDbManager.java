@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractPlayerDbSchema.ID;
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractPlayerDbSchema.NAME;
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractPlayerDbSchema.TABLE;
@@ -70,6 +73,21 @@ public final class PlayerDbManager extends DbManager {
     }
 
     /**
+     * From a player name, returns the associated java entity.
+     * @param name The name of entity to load from the database.
+     * @return The loaded entity if exists else null.
+     */
+    public Player loadSQLite(String name) {
+        Cursor result = this.database.rawQuery(String.format(SIMPLE_QUERY_ALL, this.table, NAME), new String[]{name});
+
+        if (result == null || result.getCount() == 0) {
+            return null;
+        }
+
+        return new Player(result);
+    }
+
+    /**
      * From a java entity updates the associated entity into the database.
      * @param entity The model to update into the database.
      * @return true if success else false.
@@ -88,5 +106,26 @@ public final class PlayerDbManager extends DbManager {
 
             return false;
         }
+    }
+
+    /**
+     * Query all the entities from database.
+     * @return The list of entities loaded.
+     */
+    public List<Player> queryAllSQLite() {
+        Player player;
+        List<Player> players = new ArrayList<>();
+        Cursor cursor = this.database.rawQuery(String.format(DbManager.QUERY_ALL, this.table), null);
+
+        while (cursor.moveToNext()) {
+            player = new Player();
+
+            player.init(cursor, false);
+            players.add(player);
+        }
+
+        cursor.close();
+
+        return players;
     }
 }

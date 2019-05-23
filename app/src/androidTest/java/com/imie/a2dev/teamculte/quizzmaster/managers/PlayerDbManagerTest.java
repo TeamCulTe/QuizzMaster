@@ -77,6 +77,15 @@ public final class PlayerDbManagerTest extends CommonDbManagerTest {
     }
 
     @Test
+    public void testNameLoadSQLite() {
+        Player loaded = this.manager.loadSQLite(this.testEntity.getName());
+
+        assertNotNull(loaded);
+        assertEquals(this.testEntity.getId(), loaded.getId());
+        assertEquals(this.testEntity.getName(), loaded.getName());
+    }
+
+    @Test
     public void testUpdateSQLite() {
         String newName = "newName";
         
@@ -96,10 +105,12 @@ public final class PlayerDbManagerTest extends CommonDbManagerTest {
         assertNull(this.manager.loadSQLite(this.testEntity.getId()));
     }
 
-    /**
-     * Initializes the test entity.
-     * @return The test entity.
-     */
+    @Test
+    public void testCountSQLite() {
+        assertEquals(1, this.manager.countSQLite());
+    }
+
+    @Override
     protected void initTestEntity() {
         Difficulty difficulty = new Difficulty(DifficultyDbManagerTest.TEST_NAME);
         

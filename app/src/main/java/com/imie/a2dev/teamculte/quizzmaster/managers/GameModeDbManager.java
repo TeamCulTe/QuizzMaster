@@ -8,8 +8,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.GameMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.ID;
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.NAME;
+import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.PLAYER_NB;
 import static com.imie.a2dev.teamculte.quizzmaster.schemas.AbstractGameModeDbSchema.TABLE;
 import static com.imie.a2dev.teamculte.quizzmaster.utils.TagUtils.SQLITE_TAG;
 
@@ -38,6 +42,7 @@ public final class GameModeDbManager extends DbManager {
             ContentValues data = new ContentValues();
 
             data.put(NAME, entity.getName());
+            data.put(PLAYER_NB, entity.getPlayerNumber());
             
             if (entity.getId() != 0) {
                 data.put(this.ids[0], entity.getId());
@@ -81,6 +86,7 @@ public final class GameModeDbManager extends DbManager {
             String[] whereArgs = new String[]{String.valueOf(entity.getId())};
 
             data.put(NAME, entity.getName());
+            data.put(PLAYER_NB, entity.getPlayerNumber());
 
             return this.database.update(this.table, data, whereClause, whereArgs) != 0;
         } catch (SQLiteException e) {
@@ -88,5 +94,26 @@ public final class GameModeDbManager extends DbManager {
 
             return false;
         }
+    }
+
+    /**
+     * Query all the entities from database.
+     * @return The list of entities loaded.
+     */
+    public List<GameMode> queryAllSQLite() {
+        GameMode mode;
+        List<GameMode> modes = new ArrayList<>();
+        Cursor cursor = this.database.rawQuery(String.format(DbManager.QUERY_ALL, this.table), null);
+
+        while (cursor.moveToNext()) {
+            mode = new GameMode();
+
+            mode.init(cursor, false);
+            modes.add(mode);
+        }
+
+        cursor.close();
+
+        return modes;
     }
 }

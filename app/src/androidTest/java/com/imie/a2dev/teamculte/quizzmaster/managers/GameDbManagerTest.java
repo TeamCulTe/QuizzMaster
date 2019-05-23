@@ -76,9 +76,14 @@ public final class GameDbManagerTest extends CommonDbManagerTest {
         assertNull(this.manager.loadSQLite(this.testEntity.getId()));
     }
 
+    @Test
+    public void testCountSQLite() {
+        assertEquals(1, this.manager.countSQLite());
+    }
+
     @Override
     protected void initTestEntity() {
-        GameMode mode = new GameMode(GameModeDbManagerTest.TEST_NAME);
+        GameMode mode = new GameMode(GameModeDbManagerTest.TEST_NAME, GameModeDbManagerTest.TEST_PLAYER_NUMBER);
 
         new GameModeDbManager(this.context).createSQLite(mode);
         

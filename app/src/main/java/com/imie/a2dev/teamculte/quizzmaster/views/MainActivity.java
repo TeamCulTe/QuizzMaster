@@ -4,12 +4,32 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Spinner;
 import com.imie.a2dev.teamculte.quizzmaster.R;
+import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.Game;
+import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.GameMode;
+import com.imie.a2dev.teamculte.quizzmaster.managers.GameDbManager;
+import com.imie.a2dev.teamculte.quizzmaster.managers.GameModeDbManager;
+import com.imie.a2dev.teamculte.quizzmaster.views.adapters.GameModeSpinnerAdapter;
 
 /**
  * Main activity.
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    /**
+     * Stores the game intent tag.
+     */
+    public static final String GAME_INTENT = "Game";
+    
+    /**
+     * Stores the game mode selection.
+     */
+    private Spinner spinnerGameMode;
+
+    /**
+     * Stores the spinner adapter.
+     */
+    private GameModeSpinnerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +45,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         
         switch (view.getId()) {
             case R.id.btn_new_game:
-                intent = new Intent(this, InitGameActivity.class);
-                intent.putExtra(InitGameActivity.STEP, InitGameActivity.CREATE_PLAYER_STEP);
-                
-                break;
-            
             case R.id.btn_load_player:
-                intent = new Intent(this, InitGameActivity.class);
-                intent.putExtra(InitGameActivity.STEP, InitGameActivity.LOAD_PLAYER_STEP);
+                Game game = new Game(this.adapter.getItem(this.spinnerGameMode.getSelectedItemPosition()));
+                
+                new GameDbManager(this).createSQLite(game);
+                
+                if (view.getId() == R.id.btn_new_game) {
+                    intent = new Intent(this, InitGameActivity.class);
+                    intent.putExtra(InitGameActivity.STEP, InitGameActivity.CREATE_PLAYER_STEP);
+                } else {
+                    intent = new Intent(this, InitGameActivity.class);
+                    intent.putExtra(InitGameActivity.STEP, InitGameActivity.LOAD_PLAYER_STEP);
+                }
+                
+                intent.putExtra(GAME_INTENT, game);
                 
                 break;
             
@@ -55,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.findViewById(R.id.btn_new_game).setOnClickListener(this);
         this.findViewById(R.id.btn_load_player).setOnClickListener(this);
         this.findViewById(R.id.btn_settings).setOnClickListener(this);
+        
+        this.adapter = new GameModeSpinnerAdapter(this, new GameModeDbManager(this).queryAllSQLite());
+        this.spinnerGameMode = this.findViewById(R.id.spinner_game_mode);
+        
+        this.spinnerGameMode.setAdapter(this.adapter);
     }
     
 }

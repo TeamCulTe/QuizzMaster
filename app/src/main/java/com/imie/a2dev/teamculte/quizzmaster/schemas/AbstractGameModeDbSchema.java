@@ -20,6 +20,11 @@ public abstract class AbstractGameModeDbSchema {
     public static final String NAME = "name_game_mode";
 
     /**
+     * Define the name of the player number field.
+     */
+    public static final String PLAYER_NB = "player_number";
+
+    /**
      * Define the size of the name field.
      */
     private static final String NAME_SIZE = "50";
@@ -28,5 +33,5 @@ public abstract class AbstractGameModeDbSchema {
      * Stores the create table statement.
      */
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE + " (" + ID + " INTEGER PRIMARY " +
-            "KEY, " + NAME + " TEXT(" + NAME_SIZE + ") UNIQUE NOT NULL);";
+            "KEY, " + NAME + " TEXT(" + NAME_SIZE + ") UNIQUE NOT NULL, " + PLAYER_NB + " INT NOT NULL);";
 }

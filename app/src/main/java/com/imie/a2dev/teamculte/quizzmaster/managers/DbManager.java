@@ -25,6 +25,11 @@ public abstract class DbManager {
     private final String COUNT = "count";
 
     /**
+     * Stores a query all string for entities. 
+     */
+    protected static final String QUERY_ALL = "SELECT * FROM %s";
+
+    /**
      * Stores a query all string for entity with only one id. 
      */
     protected static final String SIMPLE_QUERY_ALL = "SELECT * FROM %s WHERE %s = ?";
@@ -179,24 +184,6 @@ public abstract class DbManager {
     }
 
     /**
-     * From an id, returns the associated java entity as a cursor (simple entities).
-     * @param id The id of entity to load from the database.
-     * @return The cursor of the loaded entity.
-     */
-    public Cursor loadCursorSQLite(int id) {
-        try {
-            String[] selectArgs = {String.valueOf(id)};
-            String query = String.format(SIMPLE_QUERY_ALL, this.table, this.ids[0]);
-
-            return this.database.rawQuery(query, selectArgs);
-        } catch (SQLiteException e) {
-            Log.e(SQLITE_TAG, e.getMessage());
-
-            return null;
-        }
-    }
-
-    /**
      * From an id given in parameter, deletes the associated entity in the database.
      * @param ids The ids of the entity to delete.
      * @return true if success else false.
@@ -222,6 +209,24 @@ public abstract class DbManager {
             Log.e(SQLITE_TAG, e.getMessage());
 
             return false;
+        }
+    }
+
+    /**
+     * From an id, returns the associated java entity as a cursor (simple entities).
+     * @param id The id of entity to load from the database.
+     * @return The cursor of the loaded entity.
+     */
+    protected Cursor loadCursorSQLite(int id) {
+        try {
+            String[] selectArgs = {String.valueOf(id)};
+            String query = String.format(SIMPLE_QUERY_ALL, this.table, this.ids[0]);
+
+            return this.database.rawQuery(query, selectArgs);
+        } catch (SQLiteException e) {
+            Log.e(SQLITE_TAG, e.getMessage());
+
+            return null;
         }
     }
 

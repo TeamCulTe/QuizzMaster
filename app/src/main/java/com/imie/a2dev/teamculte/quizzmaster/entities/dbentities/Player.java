@@ -33,6 +33,15 @@ public final class Player extends DbEntity {
     /**
      * Nearly full filled constructor.
      * @param name The name to set.
+     */
+    public Player(String name) {
+        this.name = name;
+        this.points = 0;
+    }
+
+    /**
+     * Nearly full filled constructor.
+     * @param name The name to set.
      * @param difficulty The difficulty to set.
      */
     public Player(String name, Difficulty difficulty) {

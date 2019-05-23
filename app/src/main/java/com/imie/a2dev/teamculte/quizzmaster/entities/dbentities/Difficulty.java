@@ -15,6 +15,12 @@ public final class Difficulty extends DbEntity {
     private String name;
 
     /**
+     * Default constructor
+     */
+    public Difficulty() {
+    }
+
+    /**
      * Nearly full filled constructor.
      * @param name The name to set.
      */
