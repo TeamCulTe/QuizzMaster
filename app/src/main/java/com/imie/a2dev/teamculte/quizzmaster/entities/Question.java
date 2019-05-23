@@ -2,6 +2,9 @@ package com.imie.a2dev.teamculte.quizzmaster.entities;
 
 import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.Difficulty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class defining a question in the game.
  */
@@ -27,9 +30,14 @@ public final class Question {
     private Difficulty difficulty;
 
     /**
+     * Stores the associated clue.
+     */
+    private Clue clue;
+
+    /**
      * Stores the possible answers.
      */
-    private Answer[] answers = new Answer[ANSWER_NB];
+    private List<Answer> answers = new ArrayList<>();
 
     /**
      * Stores the path of the image picked for the question.
@@ -45,10 +53,12 @@ public final class Question {
     /**
      * Full filled constructor.
      */
-    public Question(String value, int correctAnswerIndex, Difficulty difficulty, Answer[] answers, String imagePath) {
+    public Question(String value, int correctAnswerIndex, Difficulty difficulty, Clue clue, List<Answer> answers,
+                    String imagePath) {
         this.value = value;
         this.correctAnswerIndex = correctAnswerIndex;
         this.difficulty = difficulty;
+        this.clue = clue;
         this.answers = answers;
         this.imagePath = imagePath;
     }
@@ -102,18 +112,34 @@ public final class Question {
     }
 
     /**
-     * Gets the answers attribute.
-     * @return The Answer value of answers attribute.
+     * Gets the clue attribute.
+     * @return The Clue value of clue attribute.
      */
-    public Answer[] getAnswers() {
+    public Clue getClue() {
+        return this.clue;
+    }
+
+    /**
+     * Sets the clue attribute.
+     * @param newClue The new Clue value to set.
+     */
+    public void setClue(Clue newClue) {
+        this.clue = newClue;
+    }
+
+    /**
+     * Gets the answers attribute.
+     * @return The List<Answer> value of answers attribute.
+     */
+    public List<Answer> getAnswers() {
         return this.answers;
     }
 
     /**
      * Sets the answers attribute.
-     * @param newAnswers The new Answer value to set.
+     * @param newAnswers The new List<Answer> value to set.
      */
-    public void setAnswers(Answer[] newAnswers) {
+    public void setAnswers(List<Answer> newAnswers) {
         this.answers = newAnswers;
     }
 
@@ -138,6 +164,6 @@ public final class Question {
      * @return The correct answer.
      */
     public Answer getCorrectAnswer() {
-        return this.answers[this.correctAnswerIndex];
+        return this.answers.get(this.correctAnswerIndex);
     }
 }

@@ -2,8 +2,6 @@ package com.imie.a2dev.teamculte.quizzmaster.views;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +16,11 @@ import com.imie.a2dev.teamculte.quizzmaster.managers.PlayerDbManager;
  * Fragment managing the player creation.
  */
 public class CreatePlayerFragment extends Fragment implements View.OnClickListener {
+    /**
+     * Stores the fragment's title.
+     */
+    private TextView txtTitle;
+    
     /**
      * Stores the player name edit text.
      */
@@ -54,8 +57,11 @@ public class CreatePlayerFragment extends Fragment implements View.OnClickListen
             if (this.getRealActivity().hasAllPlayers()) {
                 this.getRealActivity().replaceFragment(new CreateQuestionFragment());
             } else {
-                this.init(this.getView());
+                this.clearFields();
             }
+        } else if (!CreatePlayerFragment.this.validateData()) {
+            this.txtError.setText(R.string.player_name_take);
+            this.txtError.setVisibility(View.VISIBLE);
         }
     }
 
@@ -64,20 +70,25 @@ public class CreatePlayerFragment extends Fragment implements View.OnClickListen
      * @param view The fragment's view.
      */
     private void init(View view) {
-        this.editTxtPlayer = view.findViewById(R.id.editTxtPlayer);
-        
-        this.editTxtPlayer.setText("");
-        
+        this.txtTitle = view.findViewById(R.id.txt_title);
+        this.editTxtPlayer = view.findViewById(R.id.edit_txt_player);
         this.txtError = view.findViewById(R.id.txt_error);
         
+        view.findViewById(R.id.btn_validate).setOnClickListener(this);
+    }
+
+    /**
+     * Clears all the fields.
+     */
+    private void clearFields() {
+        String title = String.format(this.getString(R.string.create_player_replacement),
+                String.valueOf(this.getRealActivity().getGame().getPlayers().size() + 1),
+                String.valueOf(this.getRealActivity().getGame().getMode().getPlayerNumber()));
+        
+        this.editTxtPlayer.setText("");
         this.txtError.setText("");
         this.txtError.setVisibility(View.INVISIBLE);
-        
-        String title = String.format(this.getString(R.string.create_player_replacement),
-                String.valueOf(this.getRealActivity().getGame().getPlayers().size() + 1));
-        
-        ((TextView) view.findViewById(R.id.txt_title)).setText(title);
-        view.findViewById(R.id.btn_validate).setOnClickListener(this);
+        this.txtTitle.setText(title);
     }
 
     /**

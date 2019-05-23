@@ -3,6 +3,9 @@ package com.imie.a2dev.teamculte.quizzmaster.entities;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -22,16 +25,16 @@ public final class QuestionTest {
     @Test
     public void testGetCorrectAnswer() {
         String valuePrefix = "value";
-        Answer[] answers = new Answer[Question.ANSWER_NB];
+        List<Answer> answers = new ArrayList<>();
         int correctAnswerIndex = 1;
 
         for (int i = 0; i < Question.ANSWER_NB; i++) {
-            answers[i] = new Answer(valuePrefix + String.valueOf(i));
+            answers.add(new Answer(valuePrefix + String.valueOf(i)));
         }
 
         this.question.setAnswers(answers);
         this.question.setCorrectAnswerIndex(correctAnswerIndex);
 
-        assertEquals(answers[correctAnswerIndex], this.question.getCorrectAnswer());
+        assertEquals(answers.get(correctAnswerIndex), this.question.getCorrectAnswer());
     }
 }

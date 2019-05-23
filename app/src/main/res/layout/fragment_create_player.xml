@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTxtPlayer"
+        android:id="@+id/edit_txt_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,7 +55,7 @@
         android:layout_marginTop="8dp"
         android:textColor="@color/colorAccent"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/editTxtPlayer"
-        app:layout_constraintStart_toStartOf="@+id/editTxtPlayer"
-        app:layout_constraintTop_toBottomOf="@+id/editTxtPlayer" />
+        app:layout_constraintEnd_toEndOf="@+id/edit_txt_player"
+        app:layout_constraintStart_toStartOf="@+id/edit_txt_player"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_player" />
 </android.support.constraint.ConstraintLayout>

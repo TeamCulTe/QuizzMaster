@@ -6,14 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.GameMode;
+import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.Difficulty;
 
 import java.util.List;
 
 /**
- * Custom adapter used to feed the game mode spinners.
+ * Custom adapter used to feed the difficulty spinners.
  */
-public final class GameModeSpinnerAdapter extends ArrayAdapter {
+public final class DifficultySpinnerAdapter extends ArrayAdapter {
     /**
      * Defines the default spinner items layout.
      */
@@ -22,7 +22,7 @@ public final class GameModeSpinnerAdapter extends ArrayAdapter {
     /**
      * Stores the list of game modes to display.
      */
-    private List<GameMode> items;
+    private List<Difficulty> items;
 
     /**
      * Stores the associated context.
@@ -32,9 +32,9 @@ public final class GameModeSpinnerAdapter extends ArrayAdapter {
     /**
      * GameModeSpinnerAdapter's constructor.
      * @param context The associated context.
-     * @param items The list of game modes to display.
+     * @param items The list of difficulties to display.
      */
-    public GameModeSpinnerAdapter(Context context, List<GameMode> items) {
+    public DifficultySpinnerAdapter(Context context, List<Difficulty> items) {
         super(context, DEFAULT_LAYOUT);
         
         this.items = items;
@@ -75,7 +75,7 @@ public final class GameModeSpinnerAdapter extends ArrayAdapter {
     }
 
     @Override
-    public GameMode getItem(int i) {
+    public Difficulty getItem(int i) {
         return this.items.get(i);
     }
 }

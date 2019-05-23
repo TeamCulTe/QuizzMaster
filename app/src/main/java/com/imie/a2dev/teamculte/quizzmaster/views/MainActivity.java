@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.findViewById(R.id.btn_load_player).setOnClickListener(this);
         this.findViewById(R.id.btn_settings).setOnClickListener(this);
         
+        // TODO: Remove here
+        new GameModeDbManager(this).createSQLite(new GameMode("Player vs IA", 1));
+        new GameModeDbManager(this).createSQLite(new GameMode("Player vs Player", 2));
+        
         this.adapter = new GameModeSpinnerAdapter(this, new GameModeDbManager(this).queryAllSQLite());
         this.spinnerGameMode = this.findViewById(R.id.spinner_game_mode);
         
