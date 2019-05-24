@@ -15,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="@string/create_player_replacement"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -58,4 +58,16 @@
         app:layout_constraintEnd_toEndOf="@+id/edit_txt_player"
         app:layout_constraintStart_toStartOf="@+id/edit_txt_player"
         app:layout_constraintTop_toBottomOf="@+id/edit_txt_player" />
+
+    <Button
+        android:id="@+id/btn_load_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/load_player"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_validate" />
 </android.support.constraint.ConstraintLayout>

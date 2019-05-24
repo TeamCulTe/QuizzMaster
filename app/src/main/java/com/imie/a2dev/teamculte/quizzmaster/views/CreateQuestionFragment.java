@@ -19,6 +19,7 @@ import com.imie.a2dev.teamculte.quizzmaster.entities.Question;
 import com.imie.a2dev.teamculte.quizzmaster.entities.dbentities.Difficulty;
 import com.imie.a2dev.teamculte.quizzmaster.managers.DifficultyDbManager;
 import com.imie.a2dev.teamculte.quizzmaster.views.adapters.DifficultySpinnerAdapter;
+import com.imie.a2dev.teamculte.quizzmaster.views.adapters.QuestionRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,15 @@ public class CreateQuestionFragment extends Fragment implements View.OnClickList
      * Stores the difficulty spinner adapter.
      */
     private DifficultySpinnerAdapter difficultyAdapter;
-    
+
+    /**
+     * Stores the question recycler adapter.
+     */
+    private QuestionRecyclerViewAdapter questionAdapter;
+
+    /**
+     * Defaukt constructor.
+     */
     public CreateQuestionFragment() {
     }
 
@@ -124,8 +133,16 @@ public class CreateQuestionFragment extends Fragment implements View.OnClickList
         
         this.difficultyAdapter = new DifficultySpinnerAdapter(this.getContext(),
                 new DifficultyDbManager(this.getContext()).queryAllSQLite());
+        this.questionAdapter = new QuestionRecyclerViewAdapter(this.getRealActivity().getGame().getQuestions());
         
         this.spinnerDifficulty.setAdapter(this.difficultyAdapter);
+        this.recyclerQuestionsList.setAdapter(this.questionAdapter);
+
+        String title = (String.format(this.getString(R.string.create_question_replacement),
+                String.valueOf(this.getRealActivity().getGame().getQuestions().size()),
+                String.valueOf(Question.ANSWER_NB)));
+
+        this.txtTitle.setText(title);
     }
 
     /**
@@ -204,6 +221,7 @@ public class CreateQuestionFragment extends Fragment implements View.OnClickList
                 clue,
                 answers, 
                 imagePath));
+        this.questionAdapter.notifyDataSetChanged();
     }
 
     /**

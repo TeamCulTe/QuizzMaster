@@ -46,22 +46,26 @@ public class CreatePlayerFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (CreatePlayerFragment.this.validateData() && !this.getRealActivity().hasAllPlayers()) {
-            Player player = new Player(this.editTxtPlayer.getText().toString());
+        if (view.getId() == R.id.btn_validate) {
+            if (CreatePlayerFragment.this.validateData() && !this.getRealActivity().hasAllPlayers()) {
+                Player player = new Player(this.editTxtPlayer.getText().toString());
 
-            new PlayerDbManager(CreatePlayerFragment.this.getContext()).createSQLite(player);
+                new PlayerDbManager(CreatePlayerFragment.this.getContext()).createSQLite(player);
 
-            
-            this.getRealActivity().getGame().getPlayers().add(player);
-            
-            if (this.getRealActivity().hasAllPlayers()) {
-                this.getRealActivity().replaceFragment(new CreateQuestionFragment());
-            } else {
-                this.clearFields();
+
+                this.getRealActivity().getGame().getPlayers().add(player);
+
+                if (this.getRealActivity().hasAllPlayers()) {
+                    this.getRealActivity().replaceFragment(new CreateQuestionFragment());
+                } else {
+                    this.clearFields();
+                }
+            } else if (!CreatePlayerFragment.this.validateData()) {
+                this.txtError.setText(R.string.player_name_take);
+                this.txtError.setVisibility(View.VISIBLE);
             }
-        } else if (!CreatePlayerFragment.this.validateData()) {
-            this.txtError.setText(R.string.player_name_take);
-            this.txtError.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.btn_load_player) {
+            this.getRealActivity().replaceFragment(new LoadPlayerFragment());
         }
     }
 
@@ -73,8 +77,15 @@ public class CreatePlayerFragment extends Fragment implements View.OnClickListen
         this.txtTitle = view.findViewById(R.id.txt_title);
         this.editTxtPlayer = view.findViewById(R.id.edit_txt_player);
         this.txtError = view.findViewById(R.id.txt_error);
+
+        String title = String.format(this.getString(R.string.create_player_replacement),
+                String.valueOf(this.getRealActivity().getGame().getPlayers().size() + 1),
+                String.valueOf(this.getRealActivity().getGame().getMode().getPlayerNumber()));
+        
+        this.txtTitle.setText(title);
         
         view.findViewById(R.id.btn_validate).setOnClickListener(this);
+        view.findViewById(R.id.btn_load_player).setOnClickListener(this);
     }
 
     /**
@@ -96,7 +107,10 @@ public class CreatePlayerFragment extends Fragment implements View.OnClickListen
      * @return True if data are correct else false.
      */
     private boolean validateData() {
-        return (new PlayerDbManager(this.getContext()).loadSQLite(this.editTxtPlayer.getText().toString()) == null);
+        boolean valid =
+                (new PlayerDbManager(this.getContext()).loadSQLite(this.editTxtPlayer.getText().toString()) == null) &&
+                        !this.editTxtPlayer.getText().toString().equals(""));
+        return valid;
     }
 
     /**
